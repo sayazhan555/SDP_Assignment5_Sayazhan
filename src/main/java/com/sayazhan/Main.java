@@ -39,6 +39,26 @@ public class Main {
         System.out.println("Traffic level: " + selectedRoute.trafficLevel());
         System.out.println("Final time: " +
                 RouteFilter.getFinalTime(selectedRoute) + " min");
-        System.out.println("Cost: " + selectedRoute.cost() + " KZT");
+        System.out.println("Total cost: " +
+                RouteFilter.getTotalCost(selectedRoute, request) + " KZT");
+
+
+
+        System.out.println();
+
+        planner.setStrategy(new CheapestRouteStrategy());
+
+        Route cheapestRoute = planner.plan(routes, request);
+
+        CheapestRouteStrategy cheapestStrategy = new CheapestRouteStrategy();
+
+        System.out.println("CHEAPEST ROUTE RESULT");
+        System.out.println("Strategy: " + cheapestStrategy.getStrategyName());
+        System.out.println("Selected: " + cheapestRoute.id());
+        System.out.println("Distance: " + cheapestRoute.distanceKm() + " km");
+        System.out.println("Final time: " + RouteFilter.getFinalTime(cheapestRoute) + " min");
+        System.out.println("Total cost: " +
+                cheapestStrategy.calculateCost(cheapestRoute, request) + " KZT");
+
     }
 }
