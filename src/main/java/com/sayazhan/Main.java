@@ -17,7 +17,22 @@ public class Main {
                         18.0, 25, 3000, 3.0, 1, true),
 
                 new Route("Route C", warehouse, airport,
-                        20.0, 30, 2500, 2.0, 0, true)
+                        20.0, 30, 2500, 2.0, 0, true),
+
+                new Route("Route D", warehouse, airport,
+                        22.0, 19, 4500, 4.5, 0, true),
+
+                new Route("Route E", warehouse, airport,
+                        24.0, 34, 1700, 1.3, 1, true),
+
+                new Route("Route F", warehouse, airport,
+                        16.0, 26, 3200, 2.7, 2, true),
+
+                new Route("Route G", warehouse, airport,
+                        12.0, 18, 1500, 1.0, 0, false),
+
+                new Route("Route H", warehouse, airport,
+                        19.0, 24, 3600, 0.9, 1, true)
         );
 
         DeliveryRequest request = new DeliveryRequest(
@@ -77,7 +92,8 @@ public class Main {
         System.out.println("Selected: " + ecoRoute.id());
         System.out.println("Distance: " + ecoRoute.distanceKm() + " km");
         System.out.println("CO2 emission: " + ecoRoute.carbonEmission() + " kg");
-        System.out.println("Eco score: " + ecoStrategy.calculateEcoScore(ecoRoute));
+        System.out.printf("Eco score: %.2f%n",
+                ecoStrategy.calculateEcoScore(ecoRoute));
         System.out.println("Total cost: " +
                 RouteFilter.getTotalCost(ecoRoute, request) + " KZT");
 
