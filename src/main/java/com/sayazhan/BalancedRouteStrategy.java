@@ -39,13 +39,13 @@ public class BalancedRouteStrategy implements RouteStrategy {
         List<Route> validRoutes = RouteFilter.getValidRoutes(routes, request);
 
         if (validRoutes.isEmpty()) {
-            throw new IllegalStateException("No suitable route found");
+            throw new NoSuitableRouteException("No suitable route found");
         }
 
         return validRoutes.stream()
                 .min(Comparator.comparingDouble(route ->
                         calculateScore(route, validRoutes, request)))
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuitableRouteException("No suitable route found"));
     }
 
     public double calculateScore(

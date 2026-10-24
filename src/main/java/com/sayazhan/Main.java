@@ -224,5 +224,46 @@ public class Main {
         StrategyComparison comparison = new StrategyComparison(allStrategies);
 
         comparison.compare(routes, request);
+
+
+
+        System.out.println();
+        System.out.println("FAILURE SCENARIOS");
+
+        // Test 1: Empty route list
+        try {
+            planner.plan(List.of(), request);
+        } catch (NoSuitableRouteException e) {
+            System.out.println("Test 1 - Empty routes: " + e.getMessage());
+        }
+
+        // Test 2: Very low budget
+        DeliveryRequest lowBudgetRequest = new DeliveryRequest(
+                DeliveryPriority.ECONOMY, 500, 60, false
+        );
+
+        try {
+            planner.plan(routes, lowBudgetRequest);
+        } catch (NoSuitableRouteException e) {
+            System.out.println("Test 2 - Low budget: " + e.getMessage());
+        }
+
+        // Test 3: Short deadline
+        DeliveryRequest shortDeadlineRequest = new DeliveryRequest(
+                DeliveryPriority.URGENT, 10000, 10, false
+        );
+
+        try {
+            planner.plan(routes, shortDeadlineRequest);
+        } catch (NoSuitableRouteException e) {
+            System.out.println("Test 3 - Short deadline: " + e.getMessage());
+        }
+
+        // Test 4: Invalid balanced weights
+        try {
+            new BalancedRouteStrategy(0.5, 0.5, 0.5, 0.5);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Test 4 - Invalid weights: " + e.getMessage());
+        }
     }
 }

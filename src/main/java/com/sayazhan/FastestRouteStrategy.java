@@ -12,7 +12,7 @@ public class FastestRouteStrategy implements RouteStrategy {
 
         return validRoutes.stream()
                 .min(Comparator.comparingInt(RouteFilter::getFinalTime))
-                .orElseThrow(() -> new IllegalStateException("No suitable route found"));
+                .orElseThrow(() -> new NoSuitableRouteException("No suitable route found"));
     }
 
 

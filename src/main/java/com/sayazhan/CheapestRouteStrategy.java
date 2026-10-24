@@ -13,7 +13,7 @@ public class CheapestRouteStrategy implements RouteStrategy {
         return validRoutes.stream()
                 .filter(route -> calculateCost(route, request) <= request.maxBudget())
                 .min(Comparator.comparingDouble(route -> calculateCost(route, request)))
-                .orElseThrow(() -> new IllegalStateException("No suitable route found"));
+                .orElseThrow(() -> new NoSuitableRouteException("No suitable route found"));
     }
 
     public double calculateCost(Route route, DeliveryRequest request) {

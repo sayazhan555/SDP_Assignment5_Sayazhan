@@ -12,7 +12,7 @@ public class DistanceFirstRouteStrategy implements RouteStrategy {
 
         return validRoutes.stream()
                 .min(Comparator.comparingDouble(Route::distanceKm))
-                .orElseThrow(() -> new IllegalStateException("No suitable route found"));
+                .orElseThrow(() -> new NoSuitableRouteException("No suitable route found"));
     }
 
     @Override

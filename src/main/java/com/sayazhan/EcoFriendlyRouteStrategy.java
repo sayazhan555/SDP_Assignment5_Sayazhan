@@ -12,7 +12,7 @@ public class EcoFriendlyRouteStrategy implements RouteStrategy {
 
         return validRoutes.stream()
                 .min(Comparator.comparingDouble(this::calculateEcoScore))
-                .orElseThrow(() -> new IllegalStateException("No suitable route found"));
+                .orElseThrow(() -> new NoSuitableRouteException("No suitable route found"));
     }
 
     public double calculateEcoScore(Route route) {

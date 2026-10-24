@@ -36,7 +36,7 @@ public class StrategyComparison {
                 System.out.println("CO2: " +
                         selected.carbonEmission() + " kg");
 
-            } catch (IllegalStateException e) {
+            } catch (NoSuitableRouteException e) {
                 System.out.println("No suitable route: " + e.getMessage());
             }
         }
