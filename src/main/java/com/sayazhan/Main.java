@@ -44,6 +44,7 @@ public class Main {
 
 
 
+
         System.out.println();
 
         planner.setStrategy(new CheapestRouteStrategy());
@@ -60,5 +61,24 @@ public class Main {
         System.out.println("Total cost: " +
                 cheapestStrategy.calculateCost(cheapestRoute, request) + " KZT");
 
+
+
+
+        System.out.println();
+
+        planner.setStrategy(new EcoFriendlyRouteStrategy());
+
+        Route ecoRoute = planner.plan(routes, request);
+
+        EcoFriendlyRouteStrategy ecoStrategy = new EcoFriendlyRouteStrategy();
+
+        System.out.println("ECO-FRIENDLY ROUTE RESULT");
+        System.out.println("Strategy: " + ecoStrategy.getStrategyName());
+        System.out.println("Selected: " + ecoRoute.id());
+        System.out.println("Distance: " + ecoRoute.distanceKm() + " km");
+        System.out.println("CO2 emission: " + ecoRoute.carbonEmission() + " kg");
+        System.out.println("Eco score: " + ecoStrategy.calculateEcoScore(ecoRoute));
+        System.out.println("Total cost: " +
+                RouteFilter.getTotalCost(ecoRoute, request) + " KZT");
     }
 }
