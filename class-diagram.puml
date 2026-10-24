@@ -1,0 +1,116 @@
+@startuml
+title Smart Delivery System - Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+interface RouteStrategy {
+    +selectRoute(routes, request): Route
+    +getStrategyName(): String
+    +explainRoute(route, request): String
+}
+
+class RoutePlanner {
+    -strategy: RouteStrategy
+    +RoutePlanner(strategy)
+    +setStrategy(strategy): void
+    +plan(routes, request): Route
+}
+
+class FastestRouteStrategy
+class CheapestRouteStrategy
+class EcoFriendlyRouteStrategy
+class BalancedRouteStrategy {
+    -timeWeight: double
+    -costWeight: double
+    -distanceWeight: double
+    -emissionWeight: double
+    +calculateScore(route, routes, request): double
+}
+class DistanceFirstRouteStrategy
+
+class StrategySelector {
+    -strategies: Map
+    +register(priority, strategy): void
+    +selectStrategy(request): RouteStrategy
+}
+
+class Route {
+    +id: String
+    +origin: Location
+    +destination: Location
+    +distanceKm: double
+    +estimatedMinutes: int
+    +cost: double
+    +carbonEmission: double
+    +trafficLevel: int
+    +available: boolean
+}
+
+class Location {
+    +name: String
+    +latitude: double
+    +longitude: double
+}
+
+class DeliveryRequest {
+    +priority: DeliveryPriority
+    +maxBudget: double
+    +maxDeliveryMinutes: int
+    +ecoPreferred: boolean
+}
+
+enum DeliveryPriority {
+    URGENT
+    ECONOMY
+    ECO
+    STANDARD
+}
+
+class RouteFilter {
+    +getValidRoutes(routes, request): List
+    +getFinalTime(route): int
+    +getTotalCost(route, request): double
+    +getRejectionReason(route, request): String
+}
+
+class RouteDecision {
+    +selectedRoute: Route
+    +strategyName: String
+    +reason: String
+    +rejectedRoutes: List
+    +printDecision(): void
+}
+
+class RouteExplanationService {
+    +explain(strategy, routes, request): RouteDecision
+}
+
+class StrategyComparison {
+    -strategies: List
+    +compare(routes, request): void
+}
+
+class NoSuitableRouteException
+
+RouteStrategy <|.. FastestRouteStrategy
+RouteStrategy <|.. CheapestRouteStrategy
+RouteStrategy <|.. EcoFriendlyRouteStrategy
+RouteStrategy <|.. BalancedRouteStrategy
+RouteStrategy <|.. DistanceFirstRouteStrategy
+
+RoutePlanner o--> RouteStrategy : uses
+StrategySelector --> RouteStrategy : creates
+StrategySelector --> DeliveryPriority
+Route --> Location
+DeliveryRequest --> DeliveryPriority
+RouteStrategy ..> Route
+RouteStrategy ..> DeliveryRequest
+RouteStrategy ..> RouteFilter
+RouteExplanationService --> RouteDecision
+RouteExplanationService --> RouteStrategy
+StrategyComparison o--> RouteStrategy
+RouteDecision --> Route
+RouteStrategy ..> NoSuitableRouteException
+
+@enduml

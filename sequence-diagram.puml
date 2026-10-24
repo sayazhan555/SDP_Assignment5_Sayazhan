@@ -1,0 +1,43 @@
+@startuml
+title Smart Delivery System - Sequence Diagram
+
+actor Client
+participant StrategySelector
+participant RoutePlanner
+participant "FastestRouteStrategy" as Fastest
+participant RouteFilter
+participant RouteExplanationService
+participant RouteDecision
+
+Client -> StrategySelector : selectStrategy(urgentRequest)
+StrategySelector --> Client : FastestRouteStrategy
+
+Client -> RoutePlanner : setStrategy(fastest)
+Client -> RoutePlanner : plan(routes, urgentRequest)
+
+RoutePlanner -> Fastest : selectRoute(routes, urgentRequest)
+Fastest -> RouteFilter : getValidRoutes(routes, request)
+RouteFilter --> Fastest : validRoutes
+
+Fastest -> RouteFilter : getFinalTime(route)
+RouteFilter --> Fastest : time with traffic
+
+Fastest --> RoutePlanner : Route H
+RoutePlanner --> Client : Route H
+
+Client -> RouteExplanationService : explain(fastest, routes, request)
+RouteExplanationService -> Fastest : selectRoute(routes, request)
+Fastest --> RouteExplanationService : Route H
+
+RouteExplanationService -> Fastest : explainRoute(Route H, request)
+Fastest --> RouteExplanationService : explanation
+
+RouteExplanationService -> RouteDecision : create decision
+RouteDecision --> RouteExplanationService : decision
+
+RouteExplanationService --> Client : RouteDecision
+
+Client -> RouteDecision : printDecision()
+RouteDecision --> Client : selection and reasons
+
+@enduml
