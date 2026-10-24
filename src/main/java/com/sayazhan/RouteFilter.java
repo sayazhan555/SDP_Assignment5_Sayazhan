@@ -31,4 +31,24 @@ public class RouteFilter {
 
         return route.cost() + distanceFee + priorityFee;
     }
+
+    public static String getRejectionReason(
+            Route route,
+            DeliveryRequest request
+    ) {
+        if (!route.available()) {
+            return "Route unavailable";
+        }
+
+        if (getTotalCost(route, request) > request.maxBudget()) {
+            return "Budget exceeded";
+        }
+
+        if (getFinalTime(route) > request.maxDeliveryMinutes()) {
+            return "Delivery deadline exceeded";
+        }
+
+        return null;
+    }
+
 }

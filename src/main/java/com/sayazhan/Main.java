@@ -188,5 +188,19 @@ public class Main {
                 RouteFilter.getFinalTime(shortestRoute) + " min");
         System.out.println("Total cost: " +
                 RouteFilter.getTotalCost(shortestRoute, request) + " KZT");
+
+
+
+        System.out.println();
+
+        RouteExplanationService explanationService = new RouteExplanationService();
+
+        RouteDecision decision = explanationService.explain(
+                new FastestRouteStrategy(),
+                routes,
+                request
+        );
+
+        decision.printDecision();
     }
 }
