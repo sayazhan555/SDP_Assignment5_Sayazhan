@@ -19,4 +19,15 @@ public class DistanceFirstRouteStrategy implements RouteStrategy {
     public String getStrategyName() {
         return "Shortest Distance Route";
     }
+
+
+
+    @Override
+    public String explainRoute(Route route, DeliveryRequest request) {
+
+        return "Selected distance: " + route.distanceKm() + " km\n" +
+                "Final time: " + RouteFilter.getFinalTime(route) + " min\n" +
+                "Total cost: " + RouteFilter.getTotalCost(route, request) + " KZT\n" +
+                "This route has the shortest distance among valid routes.";
+    }
 }

@@ -22,12 +22,8 @@ public class RouteExplanationService {
             }
         }
 
-        String explanation =
-                "Selected route meets all delivery constraints.\n" +
-                        "Final time: " + RouteFilter.getFinalTime(selected) + " min\n" +
-                        "Total cost: " + RouteFilter.getTotalCost(selected, request) + " KZT\n" +
-                        "Distance: " + selected.distanceKm() + " km\n" +
-                        "CO2 emission: " + selected.carbonEmission() + " kg";
+        String explanation = strategy.explainRoute(selected, request);
+
 
         return new RouteDecision(
                 selected,

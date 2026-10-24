@@ -195,12 +195,27 @@ public class Main {
 
         RouteExplanationService explanationService = new RouteExplanationService();
 
-        RouteDecision decision = explanationService.explain(
+
+        List<RouteStrategy> allStrategies = List.of(
                 new FastestRouteStrategy(),
-                routes,
-                request
+                new CheapestRouteStrategy(),
+                new EcoFriendlyRouteStrategy(),
+                new BalancedRouteStrategy(0.4, 0.3, 0.1, 0.2),
+                new DistanceFirstRouteStrategy()
         );
 
-        decision.printDecision();
+        System.out.println();
+        System.out.println("STRATEGY EXPLANATIONS");
+
+        for (RouteStrategy currentStrategy : allStrategies) {
+
+            RouteDecision decision = explanationService.explain(
+                    currentStrategy,
+                    routes,
+                    request
+            );
+
+            decision.printDecision();
+        }
     }
 }

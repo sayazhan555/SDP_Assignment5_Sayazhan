@@ -91,4 +91,21 @@ public class BalancedRouteStrategy implements RouteStrategy {
     public String getStrategyName() {
         return "Balanced Route";
     }
+
+
+
+    @Override
+    public String explainRoute(Route route, DeliveryRequest request) {
+
+        return "Balanced strategy considers four criteria:\n" +
+                "Time weight: " + timeWeight + "\n" +
+                "Cost weight: " + costWeight + "\n" +
+                "Distance weight: " + distanceWeight + "\n" +
+                "Emission weight: " + emissionWeight + "\n" +
+                "Final time: " + RouteFilter.getFinalTime(route) + " min\n" +
+                "Total cost: " + RouteFilter.getTotalCost(route, request) + " KZT\n" +
+                "Distance: " + route.distanceKm() + " km\n" +
+                "CO2 emission: " + route.carbonEmission() + " kg\n" +
+                "This route has the lowest weighted score among valid routes.";
+    }
 }

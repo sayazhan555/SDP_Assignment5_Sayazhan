@@ -24,4 +24,26 @@ public class CheapestRouteStrategy implements RouteStrategy {
     public String getStrategyName() {
         return "Cheapest Route";
     }
+
+
+    @Override
+    public String explainRoute(Route route, DeliveryRequest request) {
+
+        double baseCost = route.cost();
+        double distanceFee = route.distanceKm() * 50;
+
+        double priorityFee = 0;
+
+        if (request.priority() == DeliveryPriority.URGENT) {
+            priorityFee = 500;
+        }
+
+        double totalCost = RouteFilter.getTotalCost(route, request);
+
+        return "Base cost: " + baseCost + " KZT\n" +
+                "Distance fee: " + distanceFee + " KZT\n" +
+                "Priority fee: " + priorityFee + " KZT\n" +
+                "Total cost: " + totalCost + " KZT\n" +
+                "This route has the lowest total cost among valid routes.";
+    }
 }

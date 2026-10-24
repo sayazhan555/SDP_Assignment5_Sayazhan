@@ -7,4 +7,8 @@ public interface RouteStrategy {
     Route selectRoute(List<Route> routes, DeliveryRequest request);
 
     String getStrategyName();
+
+    default String explainRoute(Route route, DeliveryRequest request) {
+        return "Selected using " + getStrategyName();
+    }
 }
