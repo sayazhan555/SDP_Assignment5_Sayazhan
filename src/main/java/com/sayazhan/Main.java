@@ -80,5 +80,33 @@ public class Main {
         System.out.println("Eco score: " + ecoStrategy.calculateEcoScore(ecoRoute));
         System.out.println("Total cost: " +
                 RouteFilter.getTotalCost(ecoRoute, request) + " KZT");
+
+
+
+
+        System.out.println();
+
+        BalancedRouteStrategy balancedStrategy =
+                new BalancedRouteStrategy(0.4, 0.3, 0.1, 0.2);
+
+        planner.setStrategy(balancedStrategy);
+
+        Route balancedRoute = planner.plan(routes, request);
+
+        List<Route> validRoutes = RouteFilter.getValidRoutes(routes, request);
+
+        double balancedScore =
+                balancedStrategy.calculateScore(balancedRoute, validRoutes, request);
+
+        System.out.println("BALANCED ROUTE RESULT");
+        System.out.println("Strategy: " + balancedStrategy.getStrategyName());
+        System.out.println("Selected: " + balancedRoute.id());
+        System.out.println("Final time: " +
+                RouteFilter.getFinalTime(balancedRoute) + " min");
+        System.out.println("Total cost: " +
+                RouteFilter.getTotalCost(balancedRoute, request) + " KZT");
+        System.out.println("Distance: " + balancedRoute.distanceKm() + " km");
+        System.out.println("CO2 emission: " + balancedRoute.carbonEmission() + " kg");
+        System.out.printf("Balanced score: %.3f%n", balancedScore);
     }
 }
