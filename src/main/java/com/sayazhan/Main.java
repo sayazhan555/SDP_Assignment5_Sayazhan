@@ -154,5 +154,23 @@ public class Main {
             System.out.println("Strategy: " + selectedStrategy.getStrategyName());
             System.out.println("Selected route: " + result.id());
         }
+
+
+
+
+        System.out.println();
+        System.out.println("SHORTEST DISTANCE ROUTE RESULT");
+
+        planner.setStrategy(new DistanceFirstRouteStrategy());
+
+        Route shortestRoute = planner.plan(routes, request);
+
+        System.out.println("Strategy: Shortest Distance Route");
+        System.out.println("Selected: " + shortestRoute.id());
+        System.out.println("Distance: " + shortestRoute.distanceKm() + " km");
+        System.out.println("Final time: " +
+                RouteFilter.getFinalTime(shortestRoute) + " min");
+        System.out.println("Total cost: " +
+                RouteFilter.getTotalCost(shortestRoute, request) + " KZT");
     }
 }
