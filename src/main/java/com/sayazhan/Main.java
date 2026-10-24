@@ -265,5 +265,8 @@ public class Main {
         } catch (IllegalArgumentException e) {
             System.out.println("Test 4 - Invalid weights: " + e.getMessage());
         }
+
+        DeliveryMenu menu = new DeliveryMenu(routes);
+        menu.start();
     }
 }
