@@ -217,5 +217,12 @@ public class Main {
 
             decision.printDecision();
         }
+
+
+        System.out.println();
+
+        StrategyComparison comparison = new StrategyComparison(allStrategies);
+
+        comparison.compare(routes, request);
     }
 }
