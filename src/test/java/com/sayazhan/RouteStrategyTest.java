@@ -203,4 +203,33 @@ public class RouteStrategyTest {
                         -10, 20, 1000, 1.0, 0, true
                 ));
     }
+
+
+    @Test
+    void differentStrategiesCanChooseDifferentRoutes() {
+        Route fastest = new FastestRouteStrategy()
+                .selectRoute(routes, request);
+
+        Route shortest = new DistanceFirstRouteStrategy()
+                .selectRoute(routes, request);
+
+        assertEquals("B", fastest.id());
+        assertEquals("A", shortest.id());
+        assertNotEquals(fastest.id(), shortest.id());
+    }
+
+
+    @Test
+    void routeExactlyAtBudgetLimitIsAccepted() {
+        DeliveryRequest exactBudget = new DeliveryRequest(
+                DeliveryPriority.STANDARD, 2750, 25, false
+        );
+
+        Route result = new CheapestRouteStrategy()
+                .selectRoute(routes, exactBudget);
+
+        assertEquals("B", result.id());
+        assertEquals(2750.0,
+                RouteFilter.getTotalCost(result, exactBudget), 0.001);
+    }
 }
