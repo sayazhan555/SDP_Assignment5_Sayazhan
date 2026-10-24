@@ -108,5 +108,51 @@ public class Main {
         System.out.println("Distance: " + balancedRoute.distanceKm() + " km");
         System.out.println("CO2 emission: " + balancedRoute.carbonEmission() + " kg");
         System.out.printf("Balanced score: %.3f%n", balancedScore);
+
+
+
+
+
+        System.out.println();
+        System.out.println("AUTOMATIC STRATEGY SELECTION");
+
+        StrategySelector selector = new StrategySelector();
+
+        DeliveryRequest urgentRequest = new DeliveryRequest(
+                DeliveryPriority.URGENT, 6000, 40, false
+        );
+
+        DeliveryRequest economyRequest = new DeliveryRequest(
+                DeliveryPriority.ECONOMY, 5000, 50, false
+        );
+
+        DeliveryRequest ecoRequest = new DeliveryRequest(
+                DeliveryPriority.ECO, 5000, 50, true
+        );
+
+        DeliveryRequest standardRequest = new DeliveryRequest(
+                DeliveryPriority.STANDARD, 6000, 45, false
+        );
+
+        List<DeliveryRequest> requests = List.of(
+                urgentRequest,
+                economyRequest,
+                ecoRequest,
+                standardRequest
+        );
+
+        for (DeliveryRequest currentRequest : requests) {
+
+            RouteStrategy selectedStrategy = selector.selectStrategy(currentRequest);
+
+            planner.setStrategy(selectedStrategy);
+
+            Route result = planner.plan(routes, currentRequest);
+
+            System.out.println();
+            System.out.println("Priority: " + currentRequest.priority());
+            System.out.println("Strategy: " + selectedStrategy.getStrategyName());
+            System.out.println("Selected route: " + result.id());
+        }
     }
 }
